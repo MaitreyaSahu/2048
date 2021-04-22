@@ -9,6 +9,13 @@
   --tiles-height: 75px;
 }
 
+@media screen and (max-width: 650px) {
+  :root {
+    --tiles-width: 50px;
+    --tiles-height: 50px;
+  }
+}
+
 *,
 *:before,
 *:after {
@@ -19,14 +26,16 @@ body {
   background: var(--main-bg-color-light);
   background: linear-gradient(var(--main-bg-color), var(--main-bg-color-light));
   width: 100vw;
-  height: 100vw;
+  height: 100vh;
   overflow: hidden;
   display: flex;
   justify-content: center;
   text-align: center;
 }
 
-.game-body {}
+.game-body {
+  
+}
 
 .grid {
   position: relative;

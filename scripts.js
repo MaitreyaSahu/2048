@@ -365,3 +365,29 @@ function addNewTile(value, posX, posY) {
         }
     });
 })();
+
+var element = document.getElementById("game");
+var mc = new Hammer(element);
+mc.get('swipe').set({
+    direction: Hammer.DIRECTION_ALL
+});
+
+mc.on("swipeleft", function () {
+    //console.log('left key pressed');
+    moveLeft();
+});
+
+mc.on("swiperight", function () {
+    //console.log('right key pressed');
+    moveRight();
+});
+
+mc.on("swipeup", function () {
+    //console.log('up key pressed');
+    moveUp();
+});
+
+mc.on("swipedown", function () {
+    //console.log('down key pressed');
+    moveDown();
+});
