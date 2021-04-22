@@ -8,13 +8,13 @@
   --tiles-width: 75px;
   --tiles-height: 75px;
 }
-
+/* 
 @media screen and (max-width: 650px) {
   :root {
-    --tiles-width: 50px;
-    --tiles-height: 50px;
+    --tiles-width: 60px;
+    --tiles-height: 60px;
   }
-}
+} */
 
 *,
 *:before,
@@ -34,7 +34,7 @@ body {
 }
 
 .game-body {
-  
+  margin-top: 20px;
 }
 
 .grid {
