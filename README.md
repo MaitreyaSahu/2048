@@ -1,1 +1,1 @@
-# 2048 - [Demo](ttps://maitreyasahu.github.io/2048/)
+# 2048 - [Demo](https://maitreyasahu.github.io/2048/)
