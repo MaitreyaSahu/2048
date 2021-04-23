@@ -8,6 +8,7 @@ tilesContainer.addEventListener('transitionend', e => {
     if (e.target || e.target.nodeName == 'DIV') {
         //console.log(e.target);
         if(e.target.classList.contains('hidden')){
+            // console.log(e.target,e.target.dataset);
             e.target.remove();
         }
     }
@@ -16,15 +17,16 @@ generateTile();
 generateTile();
 
 function moveRight() {
-    if (isGameOver()) {
-        return;
-    }
+    // if (isGameOver()) {
+    //     return;
+    // }
+    // console.clear();
     document.querySelectorAll('.merged').forEach(elem => elem.classList.remove('merged'));
     for (y = 1; y <= 4; y++) {
         for (x = 4; x >= 1; x--) {
             
 
-            tile = document.querySelector(`.tile[data-x="${x}"][data-y="${y}"]`);
+            tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
             if (tile) {
                 //console.log('move', x, y, {...tile.dataset});
                 move(tile);
@@ -38,56 +40,58 @@ function moveRight() {
 }
 
 function moveLeft() {
-    if (isGameOver()) {
-        return;
-    }
+    // if (isGameOver()) {
+    //     return;
+    // }
+    noOfTilesMoved = 0;
     document.querySelectorAll('.merged').forEach(elem => elem.classList.remove('merged'));
-    //console.clear();
+    // console.clear();
     for (y = 1; y <= 4; y++) {
         for (x = 1; x <= 4; x++) {
-            tile = document.querySelector(`.tile[data-x="${x}"][data-y="${y}"]`);
+            tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
             
             if (tile) {
-                //console.log('before',{...tile.dataset});
+                // console.log('before',{...tile.dataset});
                 const nextX = findNextPlaceInLeft(tile);
                 //isNoTileMoved = tile.dataset.x == nextX;
                 if(tile.dataset.x != nextX){
                     noOfTilesMoved++;
                 }
                 tile.dataset.x = nextX;
-                //console.log('after',{...tile.dataset});
+                // console.log('after',{...tile.dataset});
             }
         }
     }
-
+    console.log(noOfTilesMoved);
     if (noOfTilesMoved > 0) {
         generateTile();
     }
 }
 
 function moveUp() {
-    if (isGameOver()) {
-        return;
-    }
+    // if (isGameOver()) {
+    //     return;
+    // }
+    noOfTilesMoved = 0;
     document.querySelectorAll('.merged').forEach(elem => elem.classList.remove('merged'));
-    console.clear();
+    // console.clear();
     for (x = 1; x <= 4; x++) {
         for (y = 1; y <= 4; y++) {
-            tile = document.querySelector(`.tile[data-x="${x}"][data-y="${y}"]`);
+            tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
             
             if (tile) {
-                console.log('before',{...tile.dataset});
+                // console.log('before',{...tile.dataset}, tile);
                 const nextY = findNextPlaceAtTop(tile);
                 //isNoTileMoved = tile.dataset.x == nextX;
                 if(tile.dataset.y != nextY){
                     noOfTilesMoved++;
                 }
                 tile.dataset.y = nextY;
-                console.log('after',{...tile.dataset});
+                // console.log('after',{...tile.dataset},tile);
             }
         }
     }
-
+    console.log(noOfTilesMoved);
     if (noOfTilesMoved > 0) {
         generateTile();
     }
@@ -103,15 +107,16 @@ function findNextPlaceAtTop(elem){
     let newY = y;
     //console.log(x, +x + 1, y, value);
     for (i = +y - 1; i >= 1; i--) {
-        const nextTile = document.querySelector(`.tile[data-x="${x}"][data-y="${i}"]:not(.hidden)`);
-        console.log('next tile', nextTile, i, y);
+        const nextTile = document.querySelector(`.active[data-x="${x}"][data-y="${i}"]`);
+        // console.log('next tile', nextTile, i, y);
         if (nextTile) {
             if (nextTile.dataset.value == value) {
-
+                elem.classList.remove('active');
                 elem.classList.add('hidden');
+                nextTile.classList.remove('active');
                 nextTile.classList.add('hidden');
                 addNewTile((value * 2), x, i);
-                console.log('added',(value * 2), x, i);
+                // console.log('added',(value * 2), x, i);
                 return i;
             } else {
                 return i + 1;
@@ -123,28 +128,30 @@ function findNextPlaceAtTop(elem){
 }
 
 function moveDown() {
-    if (isGameOver()) {
-        return;
-    }
+    // if (isGameOver()) {
+    //     return;
+    // }
+    // console.clear();
+    noOfTilesMoved = 0;
     document.querySelectorAll('.merged').forEach(elem => elem.classList.remove('merged'));
-    console.clear();
+    // console.clear();
     for (x = 1; x <= 4; x++) {
         for (y = 4; y >= 1; y--) {
-            tile = document.querySelector(`.tile[data-x="${x}"][data-y="${y}"]`);
+            tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
             
             if (tile) {
-                console.log('before',{...tile.dataset});
+                // console.log('before',{...tile.dataset});
                 const nextY = findNextPlaceAtBottom(tile);
                 //isNoTileMoved = tile.dataset.x == nextX;
                 if(tile.dataset.y != nextY){
                     noOfTilesMoved++;
                 }
                 tile.dataset.y = nextY;
-                console.log('after',{...tile.dataset});
+                // console.log('after',{...tile.dataset});
             }
         }
     }
-
+    console.log(noOfTilesMoved);
     if (noOfTilesMoved > 0) {
         generateTile();
     }
@@ -160,15 +167,17 @@ function findNextPlaceAtBottom(elem){
     let newY = y;
     //console.log(x, +x + 1, y, value);
     for (i = +y + 1; i <= 4; i++) {
-        const nextTile = document.querySelector(`.tile[data-x="${x}"][data-y="${i}"]:not(.hidden)`);
+        const nextTile = document.querySelector(`.active[data-x="${x}"][data-y="${i}"]`);
         console.log('next tile', nextTile, i, y);
         if (nextTile) {
             if (nextTile.dataset.value == value) {
-
+                
+                elem.classList.remove('active');
                 elem.classList.add('hidden');
+                nextTile.classList.remove('active');
                 nextTile.classList.add('hidden');
                 addNewTile((value * 2), x, i);
-                console.log('added',(value * 2), x, i);
+                // console.log('added',(value * 2), x, i);
                 return i;
             } else {
                 return i - 1;
@@ -189,12 +198,14 @@ function findNextPlaceInLeft(elem) {
     let newX = x;
     //console.log(x, +x + 1, y, value);
     for (i = +x - 1; i >= 1; i--) {
-        const nextTile = document.querySelector(`.tile[data-x="${i}"][data-y="${y}"]`);
+        const nextTile = document.querySelector(`.active[data-x="${i}"][data-y="${y}"]`);
         //console.log('next tile', nextTile, i, y);
         if (nextTile) {
             if (nextTile.dataset.value == value) {
-
+                
+                elem.classList.remove('active');
                 elem.classList.add('hidden');
+                nextTile.classList.remove('active');
                 nextTile.classList.add('hidden');
                 addNewTile((value * 2), i, y);
                 //console.log('next position', i);
@@ -226,8 +237,8 @@ function move(elem) {
 }
 
 function isGameOver() {
-    const tiles = document.querySelectorAll('.tile');
-    //console.log(tilesCount);
+    const tiles = document.querySelectorAll('.active');
+    console.log(tiles.length);
     if (tiles.length >= 16) {
         alert('game Over');
         tiles.forEach(tile => tile.remove());
@@ -246,11 +257,14 @@ function findNextPosition(elem) {
     let newX = x;
     //console.log(x, +x + 1, y, value);
     for (i = +x + 1; i <= 4; i++) {
-        const nextTile = document.querySelector(`.tile[data-x="${i}"][data-y="${y}"]`);
+        const nextTile = document.querySelector(`.active[data-x="${i}"][data-y="${y}"]`);
         //console.log('next tile', nextTile, i, y);
         if (nextTile) {
             if (nextTile.dataset.value == value) {
+                
+                elem.classList.remove('active');
                 elem.classList.add('hidden');
+                nextTile.classList.remove('active');
                 nextTile.classList.add('hidden');
                 addNewTile((value * 2), i, y);
                 //console.log('next position', i);
@@ -266,6 +280,9 @@ function findNextPosition(elem) {
 }
 
 function generateTile() {
+    if (isGameOver()) {
+        return;
+    }
      const value = Math.random() > 0.5 ? 2 : 4;
     let {
         x,
@@ -287,7 +304,7 @@ function getUnOccupiedCoordinate() {
 }
 
 function isGridOccupied(x, y) {
-    return (document.querySelector(`.tile[data-x="${x}"][data-y="${y}"]`) ? false : true);
+    return (document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`) ? false : true);
 }
 
 function getRandomCoordinate(range) {
@@ -303,6 +320,7 @@ function addNewTile(value, posX, posY) {
     const newTile = document.createElement('div');
     newTile.classList.add('tile');
     newTile.classList.add('merged');
+    newTile.classList.add('active');
     newTile.textContent = value;
     newTile.dataset.value = value;
     newTile.dataset.x = posX;
@@ -373,21 +391,17 @@ mc.get('swipe').set({
 });
 
 mc.on("swipeleft", function () {
-    //console.log('left key pressed');
     moveLeft();
 });
 
 mc.on("swiperight", function () {
-    //console.log('right key pressed');
     moveRight();
 });
 
 mc.on("swipeup", function () {
-    //console.log('up key pressed');
     moveUp();
 });
 
 mc.on("swipedown", function () {
-    //console.log('down key pressed');
     moveDown();
 });
