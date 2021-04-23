@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" id="game">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,34 +9,47 @@
     <title>2048</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
-    <div class="game-head"></div>
-    <div class="game-body">
-        <div class="grid">
-            <div class="grid-cell" data-cellX="1" data-cellY="1"></div>
-            <div class="grid-cell" data-cellX="1" data-cellY="2"></div>
-            <div class="grid-cell" data-cellX="1" data-cellY="3"></div>
-            <div class="grid-cell" data-cellX="1" data-cellY="4"></div>
-            <div class="grid-cell" data-cellX="2" data-cellY="1"></div>
-            <div class="grid-cell" data-cellX="2" data-cellY="2"></div>
-            <div class="grid-cell" data-cellX="2" data-cellY="3"></div>
-            <div class="grid-cell" data-cellX="2" data-cellY="4"></div>
-            <div class="grid-cell" data-cellX="3" data-cellY="1"></div>
-            <div class="grid-cell" data-cellX="3" data-cellY="2"></div>
-            <div class="grid-cell" data-cellX="3" data-cellY="3"></div>
-            <div class="grid-cell" data-cellX="3" data-cellY="4"></div>
-            <div class="grid-cell" data-cellX="4" data-cellY="1"></div>
-            <div class="grid-cell" data-cellX="4" data-cellY="2"></div>
-            <div class="grid-cell" data-cellX="4" data-cellY="3"></div>
-            <div class="grid-cell" data-cellX="4" data-cellY="4"></div>
-            <div class="tiles-container">
-                
+    <div class="game">
+        <div class="game-head">
+            <h1 class="game-title">2048</h1>
+            <div class="score">
+                <label>Score</label>
+                <label class="game-score">0</label>
             </div>
+            <button class="new-game">New Game</button>
         </div>
-        
+        <div class="game-body">
+            <div class="grid">
+                <div class="grid-cell" data-cellX="1" data-cellY="1"></div>
+                <div class="grid-cell" data-cellX="1" data-cellY="2"></div>
+                <div class="grid-cell" data-cellX="1" data-cellY="3"></div>
+                <div class="grid-cell" data-cellX="1" data-cellY="4"></div>
+                <div class="grid-cell" data-cellX="2" data-cellY="1"></div>
+                <div class="grid-cell" data-cellX="2" data-cellY="2"></div>
+                <div class="grid-cell" data-cellX="2" data-cellY="3"></div>
+                <div class="grid-cell" data-cellX="2" data-cellY="4"></div>
+                <div class="grid-cell" data-cellX="3" data-cellY="1"></div>
+                <div class="grid-cell" data-cellX="3" data-cellY="2"></div>
+                <div class="grid-cell" data-cellX="3" data-cellY="3"></div>
+                <div class="grid-cell" data-cellX="3" data-cellY="4"></div>
+                <div class="grid-cell" data-cellX="4" data-cellY="1"></div>
+                <div class="grid-cell" data-cellX="4" data-cellY="2"></div>
+                <div class="grid-cell" data-cellX="4" data-cellY="3"></div>
+                <div class="grid-cell" data-cellX="4" data-cellY="4"></div>
+                <div class="tiles-container">
+
+                </div>
+            </div>
+
+        </div>
+        <div class="game-info"></div>
     </div>
-    <div class="game-info"></div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js" integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"
+        integrity="sha512-UXumZrZNiOwnTcZSHLOfcTs0aos2MzBWHXOHOuB0J/R44QB0dwY5JgfbvljXcklVf65Gc4El6RjZ+lnwd2az2g=="
+        crossorigin="anonymous"></script>
     <script src="scripts.js"></script>
 </body>
+
 </html>
