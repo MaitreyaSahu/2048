@@ -60,6 +60,7 @@ body {
 
 .score{
   padding: 5px 20px;
+  border-radius: 3px;
   background: rgba(238, 228, 218, 0.35);
   font-size: 0.6em;
   font-weight: normal;
@@ -338,7 +339,14 @@ body {
   display: grid;
   grid-template-rows: auto auto;
   grid-template-columns:  auto auto auto;
-  align-items: center;
+}
+
+.controllers div{
+  width: 150px;
+  -background: rgba(238, 228, 218, 0.35);
+  -color: var(--bg-grid-cell);
+  margin: 2px auto;
+  padding: 2px 10px;
 }
 
 .controllers div:nth-child(1) {
@@ -355,4 +363,40 @@ body {
 .controllers div:nth-child(4) {
   grid-column: 1 / 4;
   grid-row: 3;
+}
+
+.game-over{
+  position: absolute;
+  top:0;
+  left:0;
+  background-color:  rgba(38, 21, 53, 0.3);
+  width: 100vw;
+  height: 100vh;
+  z-index: 100;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+}
+
+.game-result{
+  margin: 10px;
+  font-size: 2em;
+  color: white;
+}
+
+.game-reload{
+  background-color: var(--main-color);
+  font-weight: bold;
+  font-size: 1em;
+  color: var(--main-bg-color);
+  padding: 10px;
+  margin-top: 40px;
+  outline: none;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+}
+
+.hide{
+  display: none;
 }

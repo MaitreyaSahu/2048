@@ -8,6 +8,7 @@ const liveScoreBox =  document.querySelector('.score.live-score');
 const highestScoreBox =  document.querySelector('.score.highest-score');
 
 const gameInfo =  document.querySelector('.game-info');
+const gameOver =  document.querySelector('.game-over');
 
 let isBestScoreClicked = false;
 gameScoreBest.addEventListener('click',() =>{
@@ -26,7 +27,7 @@ function reloadGame() {
     tilesContainer.innerHTML = "";
     gameScoreLive.innerText = 0;
     gameScoreBest.innerText = highestScore;
-
+    gameOver.classList.add('hide');
     generateTile();
     generateTile();
 }
@@ -52,7 +53,7 @@ function reloadGame() {
 // }
 
 tilesContainer.addEventListener('transitionend', e => {
-    console.log(e.target);
+    //console.log(e.target);
     if (e.target || e.target.nodeName == 'DIV') {
         ////console.log(e.target);
         if (e.target.classList.contains('hidden')) {
@@ -111,7 +112,7 @@ function moveLeft() {
         }
     }
     //console.log(noOfTilesMoved);
-    if (noOfTilesMoved > 0) {
+    if (noOfTilesMoved > 0 || isGameOver()) {
         generateTile();
     }
 }
@@ -140,7 +141,7 @@ function moveUp() {
         }
     }
     //console.log(noOfTilesMoved);
-    if (noOfTilesMoved > 0) {
+    if (noOfTilesMoved > 0 || isGameOver()) {
         generateTile();
     }
 }
@@ -200,7 +201,7 @@ function moveDown() {
         }
     }
     ////console.log(noOfTilesMoved);
-    if (noOfTilesMoved > 0) {
+    if (noOfTilesMoved > 0 || isGameOver()) {
         generateTile();
     }
 }
@@ -293,8 +294,10 @@ function isGameOver() {
                 tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
                 tileRight = document.querySelector(`.active[data-x="${x + 1}"][data-y="${y}"]`);
                 tileBottom = document.querySelector(`.active[data-x="${x}"][data-y="${y + 1}"]`);
-                //console.clear();
-                //console.log(tile, tileRight, tileBottom);
+                console.clear();
+                console.log('tile', tile);
+                console.log('tileRight', tileRight);
+                console.log('tileBottom', tileBottom);
                 if(tileRight && tileRight.dataset.value == tile.dataset.value){
                     return false;
                 }
@@ -303,8 +306,9 @@ function isGameOver() {
                 }
             }
         }
-        alert('game Over');
-        reloadGame();
+        //alert('game Over');
+        //reloadGame();
+        gameOver.classList.remove('hide');
         return true;
     }
     return false;
