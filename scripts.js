@@ -3,6 +3,18 @@ const tiles = document.querySelectorAll('.tile');
 const gameScoreLive = document.querySelector('.game-score.live');
 const gameScoreBest = document.querySelector('.game-score.best');
 
+const scoreBox =  document.querySelector('.scores');
+const liveScoreBox =  document.querySelector('.score.live-score');
+const highestScoreBox =  document.querySelector('.score.highest-score');
+
+const gameInfo =  document.querySelector('.game-info');
+
+let isBestScoreClicked = false;
+gameScoreBest.addEventListener('click',() =>{
+    isBestScoreClicked = !isBestScoreClicked;
+    isBestScoreClicked ? gameInfo.classList.add('controllers') : gameInfo.classList.remove('controllers');
+});
+
 document.querySelector('.new-game').addEventListener('click', reloadGame)
 
 let isNoTileMoved = true;
@@ -19,11 +31,32 @@ function reloadGame() {
     generateTile();
 }
 
+// console.log(liveScoreBox);
+// liveScoreBox.addEventListener('transitionend', e => {
+//     console.log(e.target);
+//     removeFlyingScore(e);
+// });
+
+
+// highestScoreBox.addEventListener('transitionend', e => {
+//     removeFlyingScore(e);
+// });
+
+// function removeFlyingScore(e){
+//     if (e.target || e.target.nodeName == 'DIV') {
+//         if (e.target.classList.contains('score-fly')) {
+//             console.log(e.target,e.target.dataset);
+//             e.target.remove();
+//         }
+//     }
+// }
+
 tilesContainer.addEventListener('transitionend', e => {
+    console.log(e.target);
     if (e.target || e.target.nodeName == 'DIV') {
-        //console.log(e.target);
+        ////console.log(e.target);
         if (e.target.classList.contains('hidden')) {
-            // console.log(e.target,e.target.dataset);
+            // //console.log(e.target,e.target.dataset);
             e.target.remove();
         }
     }
@@ -35,7 +68,7 @@ function moveRight() {
     // if (isGameOver()) {
     //     return;
     // }
-    // console.clear();
+    // //console.clear();
     document.querySelectorAll('.merged').forEach(elem => elem.classList.remove('merged'));
     for (y = 1; y <= 4; y++) {
         for (x = 4; x >= 1; x--) {
@@ -43,7 +76,7 @@ function moveRight() {
 
             tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
             if (tile) {
-                //console.log('move', x, y, {...tile.dataset});
+                ////console.log('move', x, y, {...tile.dataset});
                 move(tile);
             }
         }
@@ -60,24 +93,24 @@ function moveLeft() {
     // }
     noOfTilesMoved = 0;
     document.querySelectorAll('.merged').forEach(elem => elem.classList.remove('merged'));
-    // console.clear();
+    // //console.clear();
     for (y = 1; y <= 4; y++) {
         for (x = 1; x <= 4; x++) {
             tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
 
             if (tile) {
-                // console.log('before',{...tile.dataset});
+                // //console.log('before',{...tile.dataset});
                 const nextX = findNextPlaceInLeft(tile);
                 //isNoTileMoved = tile.dataset.x == nextX;
                 if (tile.dataset.x != nextX) {
                     noOfTilesMoved++;
                 }
                 tile.dataset.x = nextX;
-                // console.log('after',{...tile.dataset});
+                // //console.log('after',{...tile.dataset});
             }
         }
     }
-    console.log(noOfTilesMoved);
+    //console.log(noOfTilesMoved);
     if (noOfTilesMoved > 0) {
         generateTile();
     }
@@ -89,24 +122,24 @@ function moveUp() {
     // }
     noOfTilesMoved = 0;
     document.querySelectorAll('.merged').forEach(elem => elem.classList.remove('merged'));
-    // console.clear();
+    // //console.clear();
     for (x = 1; x <= 4; x++) {
         for (y = 1; y <= 4; y++) {
             tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
 
             if (tile) {
-                // console.log('before',{...tile.dataset}, tile);
+                // //console.log('before',{...tile.dataset}, tile);
                 const nextY = findNextPlaceAtTop(tile);
                 //isNoTileMoved = tile.dataset.x == nextX;
                 if (tile.dataset.y != nextY) {
                     noOfTilesMoved++;
                 }
                 tile.dataset.y = nextY;
-                // console.log('after',{...tile.dataset},tile);
+                // //console.log('after',{...tile.dataset},tile);
             }
         }
     }
-    console.log(noOfTilesMoved);
+    //console.log(noOfTilesMoved);
     if (noOfTilesMoved > 0) {
         generateTile();
     }
@@ -120,10 +153,10 @@ function findNextPlaceAtTop(elem) {
     } = elem.dataset;
 
     let newY = y;
-    //console.log(x, +x + 1, y, value);
+    ////console.log(x, +x + 1, y, value);
     for (i = +y - 1; i >= 1; i--) {
         const nextTile = document.querySelector(`.active[data-x="${x}"][data-y="${i}"]`);
-        // console.log('next tile', nextTile, i, y);
+        // //console.log('next tile', nextTile, i, y);
         if (nextTile) {
             if (nextTile.dataset.value == value && !nextTile.classList.contains('merged')) {
                 elem.classList.remove('active');
@@ -131,14 +164,14 @@ function findNextPlaceAtTop(elem) {
                 nextTile.classList.remove('active');
                 nextTile.classList.add('hidden');
                 addNewTile((value * 2), x, i, true);
-                // console.log('added',(value * 2), x, i);
+                // //console.log('added',(value * 2), x, i);
                 return i;
             } else {
                 return i + 1;
             }
         }
     }
-    //console.log('next position', x, i);
+    ////console.log('next position', x, i);
     return 1;
 }
 
@@ -146,27 +179,27 @@ function moveDown() {
     // if (isGameOver()) {
     //     return;
     // }
-    // console.clear();
+    // //console.clear();
     noOfTilesMoved = 0;
     document.querySelectorAll('.merged').forEach(elem => elem.classList.remove('merged'));
-    // console.clear();
+    // //console.clear();
     for (x = 1; x <= 4; x++) {
         for (y = 4; y >= 1; y--) {
             tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
 
             if (tile) {
-                // console.log('before',{...tile.dataset});
+                // //console.log('before',{...tile.dataset});
                 const nextY = findNextPlaceAtBottom(tile);
                 //isNoTileMoved = tile.dataset.x == nextX;
                 if (tile.dataset.y != nextY) {
                     noOfTilesMoved++;
                 }
                 tile.dataset.y = nextY;
-                // console.log('after',{...tile.dataset});
+                // //console.log('after',{...tile.dataset});
             }
         }
     }
-    console.log(noOfTilesMoved);
+    ////console.log(noOfTilesMoved);
     if (noOfTilesMoved > 0) {
         generateTile();
     }
@@ -180,10 +213,10 @@ function findNextPlaceAtBottom(elem) {
     } = elem.dataset;
 
     let newY = y;
-    //console.log(x, +x + 1, y, value);
+    ////console.log(x, +x + 1, y, value);
     for (i = +y + 1; i <= 4; i++) {
         const nextTile = document.querySelector(`.active[data-x="${x}"][data-y="${i}"]`);
-        console.log('next tile', nextTile, i, y);
+        //console.log('next tile', nextTile, i, y);
         if (nextTile) {
             if (nextTile.dataset.value == value && !nextTile.classList.contains('merged')) {
 
@@ -192,14 +225,14 @@ function findNextPlaceAtBottom(elem) {
                 nextTile.classList.remove('active');
                 nextTile.classList.add('hidden');
                 addNewTile((value * 2), x, i, true);
-                // console.log('added',(value * 2), x, i);
+                // //console.log('added',(value * 2), x, i);
                 return i;
             } else {
                 return i - 1;
             }
         }
     }
-    //console.log('next position', x, i);
+    ////console.log('next position', x, i);
     return 4;
 }
 
@@ -211,10 +244,10 @@ function findNextPlaceInLeft(elem) {
     } = elem.dataset;
 
     let newX = x;
-    //console.log(x, +x + 1, y, value);
+    ////console.log(x, +x + 1, y, value);
     for (i = +x - 1; i >= 1; i--) {
         const nextTile = document.querySelector(`.active[data-x="${i}"][data-y="${y}"]`);
-        //console.log('next tile', nextTile, i, y);
+        ////console.log('next tile', nextTile, i, y);
         if (nextTile) {
             if (nextTile.dataset.value == value && !nextTile.classList.contains('merged')) {
 
@@ -223,14 +256,14 @@ function findNextPlaceInLeft(elem) {
                 nextTile.classList.remove('active');
                 nextTile.classList.add('hidden');
                 addNewTile((value * 2), i, y, true);
-                //console.log('next position', i);
+                ////console.log('next position', i);
                 return i;
             } else {
                 return i + 1;
             }
         }
     }
-    //console.log('next position', x, i);
+    ////console.log('next position', x, i);
     return 1;
 }
 
@@ -245,7 +278,7 @@ function move(elem) {
     }
 
     elem.dataset.x = nextX;
-    //console.log(elem.dataset.x);
+    ////console.log(elem.dataset.x);
 
     //addNewTile(32, 4, 1);
     //document.querySelector('.tile.tile-4').classList.add('pos_1-3', 'merged')
@@ -253,8 +286,23 @@ function move(elem) {
 
 function isGameOver() {
     const tiles = document.querySelectorAll('.active');
-    console.log(tiles.length);
+    //console.log(tiles.length);
     if (tiles.length >= 16) {
+        for(x = 1; x <= 4; x++){
+            for(y= 1; y <= 4; y++){
+                tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
+                tileRight = document.querySelector(`.active[data-x="${x + 1}"][data-y="${y}"]`);
+                tileBottom = document.querySelector(`.active[data-x="${x}"][data-y="${y + 1}"]`);
+                //console.clear();
+                //console.log(tile, tileRight, tileBottom);
+                if(tileRight && tileRight.dataset.value == tile.dataset.value){
+                    return false;
+                }
+                if(tileBottom && tileBottom.dataset.value == tile.dataset.value){
+                    return false;
+                }
+            }
+        }
         alert('game Over');
         reloadGame();
         return true;
@@ -271,10 +319,10 @@ function findNextPosition(elem) {
     } = elem.dataset;
 
     let newX = x;
-    //console.log(x, +x + 1, y, value);
+    ////console.log(x, +x + 1, y, value);
     for (i = +x + 1; i <= 4; i++) {
         const nextTile = document.querySelector(`.active[data-x="${i}"][data-y="${y}"]`);
-        //console.log('next tile', nextTile, i, y);
+        ////console.log('next tile', nextTile, i, y);
         if (nextTile) {
             if (nextTile.dataset.value == value && !nextTile.classList.contains('merged')) {
 
@@ -283,14 +331,14 @@ function findNextPosition(elem) {
                 nextTile.classList.remove('active');
                 nextTile.classList.add('hidden');
                 addNewTile((value * 2), i, y, true);
-                //console.log('next position', i);
+                ////console.log('next position', i);
                 return i;
             } else {
                 return i - 1;
             }
         }
     }
-    //console.log('next position', x, i);
+    ////console.log('next position', x, i);
     return 4;
 
 }
@@ -305,7 +353,7 @@ function generateTile() {
         y
     } = getUnOccupiedCoordinate();
     addNewTile(value, x, y);
-    //console.log("newtile", value, x, y);
+    ////console.log("newtile", value, x, y);
 }
 
 function getUnOccupiedCoordinate() {
@@ -341,67 +389,55 @@ function addNewTile(value, posX, posY, isMerged) {
     newTile.dataset.value = value;
     newTile.dataset.x = posX;
     newTile.dataset.y = posY;
-    // console.log(newTile);
+    // //console.log(newTile);
     tilesContainer.appendChild(newTile);
     
-    isMerged ? gameScoreLive.innerText = +gameScoreLive.innerText + value : "";
+    if(isMerged){
+        const updatedScore = +gameScoreLive.innerText + value;
+        gameScoreLive.innerText = updatedScore;
+        
+        // //show flying score added
+        // const scoreAdded = document.createElement('div');
+        // scoreAdded.classList.add('score-fly');
+        // scoreAdded.innerHTML = `+${value}`;
+        // liveScoreBox.appendChild(scoreAdded);
+
+        if(updatedScore > highestScore){
+            gameScoreBest.innerText = highestScore = updatedScore;
+            localStorage.setItem('heighestScore', updatedScore);
+        } 
+    } 
+    
 }
 
 
 
-(function () {
-    //hammerjs for swipe
-    var mc = new Hammer(document);
-    mc.get('swipe').set({
-        direction: Hammer.DIRECTION_ALL
-    });
-
-    mc.on("swipeleft", function () {
-        //console.log('left key pressed');
+// keyboard events
+document.addEventListener('keydown', function (e) {
+    ////console.log(e);
+    //left key
+    if (e.code == "ArrowLeft" || e.keyCode == '37') {
+        ////console.log('left key pressed');
         moveLeft();
-    });
-
-    mc.on("swiperight", function () {
-        //console.log('right key pressed');
+    }
+    //right key
+    else if (e.code == "ArrowRight" || e.keyCode == '39') {
+        ////console.log('right key pressed');
         moveRight();
-    });
-
-    mc.on("swipeup", function () {
-        //console.log('up key pressed');
+    }
+    //up
+    else if (e.code == "ArrowUp" || e.keyCode == "38") {
+        ////console.log('up key pressed');
         moveUp();
-    });
-
-    mc.on("swipedown", function () {
-        //console.log('down key pressed');
+    }
+    //down
+    else if (e.code == "ArrowDown" || e.keyCode == "40") {
+        ////console.log('down key pressed');
         moveDown();
-    });
+    }
+});
 
-    // keyboard events
-    document.addEventListener('keydown', function (e) {
-        //console.log(e);
-        //left key
-        if (e.code == "ArrowLeft" || e.keyCode == '37') {
-            //console.log('left key pressed');
-            moveLeft();
-        }
-        //right key
-        else if (e.code == "ArrowRight" || e.keyCode == '39') {
-            //console.log('right key pressed');
-            moveRight();
-        }
-        //up
-        else if (e.code == "ArrowUp" || e.keyCode == "38") {
-            //console.log('up key pressed');
-            moveUp();
-        }
-        //down
-        else if (e.code == "ArrowDown" || e.keyCode == "40") {
-            //console.log('down key pressed');
-            moveDown();
-        }
-    });
-})();
-
+//swipre events
 var element = document.getElementById("game");
 var mc = new Hammer(element);
 mc.get('swipe').set({
@@ -426,16 +462,16 @@ mc.on("swipedown", function () {
 
 
 if('serviceWorker' in navigator) {
-    console.log(window);
+    //console.log(window);
     
         navigator.serviceWorker.register('sw.js')
             .then((registration) => { 
-                console.log(`service worker registered succesfully ${registration}`) 
+                //console.log(`service worker registered succesfully ${registration}`) 
             })
             .catch((err) => {
-                console.log(`Error registring ${err}`) 
+                //console.log(`Error registring ${err}`) 
             })
    
 } else {
-    console.log(`Service worker is not supported in this browser.`)
+    //console.log(`Service worker is not supported in this browser.`)
 }

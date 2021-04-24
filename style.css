@@ -63,12 +63,23 @@ body {
   background: rgba(238, 228, 218, 0.35);
   font-size: 0.6em;
   font-weight: normal;
+  
+  position: relative;
 }
 
 .game-score{
   margin-top: 3px;
   font-size: 1.5em;
   font-weight: bold;
+}
+
+.score-fly{
+  position:absolute;
+  left: 50%;
+  bottom: 50%;
+  font-weight: bold;  
+  transform: translateY(-30px);
+  transition: 1s ease-in-out;
 }
 
 .game-title {
@@ -316,4 +327,32 @@ body {
 .tile[data-value="2048"] {
   background: #1c0b19;
   background-clip: content-box;
+}
+
+.game-info{
+  margin-top: 20px;
+  display: none;
+}
+
+.controllers{
+  display: grid;
+  grid-template-rows: auto auto;
+  grid-template-columns:  auto auto auto;
+  align-items: center;
+}
+
+.controllers div:nth-child(1) {
+  grid-column: 1 / 4;
+  grid-row: 1;
+}
+
+
+.controllers div:nth-child(3) {
+  grid-column: 3 / 4;
+  grid-row: 2;
+}
+
+.controllers div:nth-child(4) {
+  grid-column: 1 / 4;
+  grid-row: 3;
 }
