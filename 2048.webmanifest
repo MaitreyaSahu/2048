@@ -1,0 +1,20 @@
+{
+    "name": "2048",
+    "short_name": "2048",
+    "description": "2048 - The game",
+    "icons": [{
+        "src": "icons/android-chrome-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any maskable"
+    }, {
+        "src": "icons/android-chrome-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any maskable"
+    }],
+    "start_url": ".",
+    "display": "fullscreen",
+    "theme_color": "#160140",
+    "background_color": "#160140"
+}
