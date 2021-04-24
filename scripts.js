@@ -1,16 +1,19 @@
 const tilesContainer = document.querySelector('.tiles-container');
 const tiles = document.querySelectorAll('.tile');
-const gameScoreLabel = document.querySelector('.game-score');
+const gameScoreLive = document.querySelector('.game-score.live');
+const gameScoreBest = document.querySelector('.game-score.best');
 
 document.querySelector('.new-game').addEventListener('click', reloadGame)
 
 let isNoTileMoved = true;
 let noOfTilesMoved = 0;
-
+let highestScore = +localStorage.getItem('heighestScore') || 0;
+gameScoreBest.innerText = highestScore;
 
 function reloadGame() {
     tilesContainer.innerHTML = "";
-    gameScoreLabel.innerText = 0;
+    gameScoreLive.innerText = 0;
+    gameScoreBest.innerText = highestScore;
 
     generateTile();
     generateTile();
@@ -122,7 +125,7 @@ function findNextPlaceAtTop(elem) {
         const nextTile = document.querySelector(`.active[data-x="${x}"][data-y="${i}"]`);
         // console.log('next tile', nextTile, i, y);
         if (nextTile) {
-            if (nextTile.dataset.value == value) {
+            if (nextTile.dataset.value == value && !nextTile.classList.contains('merged')) {
                 elem.classList.remove('active');
                 elem.classList.add('hidden');
                 nextTile.classList.remove('active');
@@ -182,7 +185,7 @@ function findNextPlaceAtBottom(elem) {
         const nextTile = document.querySelector(`.active[data-x="${x}"][data-y="${i}"]`);
         console.log('next tile', nextTile, i, y);
         if (nextTile) {
-            if (nextTile.dataset.value == value) {
+            if (nextTile.dataset.value == value && !nextTile.classList.contains('merged')) {
 
                 elem.classList.remove('active');
                 elem.classList.add('hidden');
@@ -213,7 +216,7 @@ function findNextPlaceInLeft(elem) {
         const nextTile = document.querySelector(`.active[data-x="${i}"][data-y="${y}"]`);
         //console.log('next tile', nextTile, i, y);
         if (nextTile) {
-            if (nextTile.dataset.value == value) {
+            if (nextTile.dataset.value == value && !nextTile.classList.contains('merged')) {
 
                 elem.classList.remove('active');
                 elem.classList.add('hidden');
@@ -273,7 +276,7 @@ function findNextPosition(elem) {
         const nextTile = document.querySelector(`.active[data-x="${i}"][data-y="${y}"]`);
         //console.log('next tile', nextTile, i, y);
         if (nextTile) {
-            if (nextTile.dataset.value == value) {
+            if (nextTile.dataset.value == value && !nextTile.classList.contains('merged')) {
 
                 elem.classList.remove('active');
                 elem.classList.add('hidden');
@@ -341,7 +344,7 @@ function addNewTile(value, posX, posY, isMerged) {
     // console.log(newTile);
     tilesContainer.appendChild(newTile);
     
-    isMerged ? gameScoreLabel.innerText = +gameScoreLabel.innerText + value : "";
+    isMerged ? gameScoreLive.innerText = +gameScoreLive.innerText + value : "";
 }
 
 

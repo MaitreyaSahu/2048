@@ -43,10 +43,30 @@ body {
 }
 
 .game-head {
+  width: 100%;
   display: grid;
   grid-template-rows: auto auto;
-  grid-template-columns: auto auto;
+  grid-template-columns: 1fr 1fr;
   justify-content: space-between;
+  align-items: center;
+}
+
+.scores{
+  display: flex;
+  justify-content: space-between;
+}
+
+.score{
+  padding: 5px 20px;
+  background: rgba(238, 228, 218, 0.35);
+  font-size: 0.6em;
+  font-weight: normal;
+}
+
+.game-score{
+  margin-top: 3px;
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
 .game-title {
@@ -58,14 +78,22 @@ body {
 
 }
 
+.game-descritions{
+  font-size: 0.1em;
+  color: rgba(238, 228, 218, 0.5);
+}
+
 .new-game {
   justify-self: end;
-  width: 100px;
+  width: 150px;
   height: 30px;
   font-weight: bold;
   background-color: var(--main-color);
   color: var(--main-bg-color);
-  margin-top: 5px;
+  margin-top: 10px;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
 }
 
 .game-body {
