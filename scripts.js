@@ -3,15 +3,15 @@ const tiles = document.querySelectorAll('.tile');
 const gameScoreLive = document.querySelector('.game-score.live');
 const gameScoreBest = document.querySelector('.game-score.best');
 
-const scoreBox =  document.querySelector('.scores');
-const liveScoreBox =  document.querySelector('.score.live-score');
-const highestScoreBox =  document.querySelector('.score.highest-score');
+const scoreBox = document.querySelector('.scores');
+const liveScoreBox = document.querySelector('.score.live-score');
+const highestScoreBox = document.querySelector('.score.highest-score');
 
-const gameInfo =  document.querySelector('.game-info');
-const gameOver =  document.querySelector('.game-over');
+const gameInfo = document.querySelector('.game-info');
+const gameOver = document.querySelector('.game-over');
 
 let isBestScoreClicked = false;
-gameScoreBest.addEventListener('click',() =>{
+gameScoreBest.addEventListener('click', () => {
     isBestScoreClicked = !isBestScoreClicked;
     isBestScoreClicked ? gameInfo.classList.add('controllers') : gameInfo.classList.remove('controllers');
 });
@@ -66,10 +66,8 @@ generateTile();
 generateTile();
 
 function moveRight() {
-    // if (isGameOver()) {
-    //     return;
-    // }
-    // //console.clear();
+
+    noOfTilesMoved = 0;
     document.querySelectorAll('.merged').forEach(elem => elem.classList.remove('merged'));
     for (y = 1; y <= 4; y++) {
         for (x = 4; x >= 1; x--) {
@@ -78,12 +76,19 @@ function moveRight() {
             tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
             if (tile) {
                 ////console.log('move', x, y, {...tile.dataset});
-                move(tile);
+                //move(tile);
+                const nextX = findNextPlaceInRight(tile);
+                //isNoTileMoved = tile.dataset.x == nextX;
+                if (tile.dataset.x != nextX) {
+                    noOfTilesMoved++;
+                }
+                tile.dataset.x = nextX;
+                // //console.log('after',{...tile.dataset});
             }
         }
     }
 
-    if (!isNoTileMoved) {
+    if (noOfTilesMoved > 0 || isGameOver()) {
         generateTile();
     }
 }
@@ -269,53 +274,7 @@ function findNextPlaceInLeft(elem) {
 }
 
 
-function move(elem) {
-
-    //let {posX, posY} = findNextPosition(elem);
-    const nextX = findNextPosition(elem);
-
-    if (elem.dataset.x == nextX) {
-        noOfTilesMoved++;
-    }
-
-    elem.dataset.x = nextX;
-    ////console.log(elem.dataset.x);
-
-    //addNewTile(32, 4, 1);
-    //document.querySelector('.tile.tile-4').classList.add('pos_1-3', 'merged')
-}
-
-function isGameOver() {
-    const tiles = document.querySelectorAll('.active');
-    //console.log(tiles.length);
-    if (tiles.length >= 16) {
-        for(x = 1; x <= 4; x++){
-            for(y= 1; y <= 4; y++){
-                tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
-                tileRight = document.querySelector(`.active[data-x="${x + 1}"][data-y="${y}"]`);
-                tileBottom = document.querySelector(`.active[data-x="${x}"][data-y="${y + 1}"]`);
-                console.clear();
-                console.log('tile', tile);
-                console.log('tileRight', tileRight);
-                console.log('tileBottom', tileBottom);
-                if(tileRight && tileRight.dataset.value == tile.dataset.value){
-                    return false;
-                }
-                if(tileBottom && tileBottom.dataset.value == tile.dataset.value){
-                    return false;
-                }
-            }
-        }
-        //alert('game Over');
-        //reloadGame();
-        gameOver.classList.remove('hide');
-        return true;
-    }
-    return false;
-}
-
-
-function findNextPosition(elem) {
+function findNextPlaceInRight(elem) {
     let {
         x,
         y,
@@ -346,6 +305,53 @@ function findNextPosition(elem) {
     return 4;
 
 }
+
+// function move(elem) {
+
+//     //let {posX, posY} = findNextPosition(elem);
+//     const nextX = findNextPosition(elem);
+
+//     if (elem.dataset.x == nextX) {
+//         noOfTilesMoved++;
+//     }
+
+//     elem.dataset.x = nextX;
+//     ////console.log(elem.dataset.x);
+
+//     //addNewTile(32, 4, 1);
+//     //document.querySelector('.tile.tile-4').classList.add('pos_1-3', 'merged')
+// }
+
+function isGameOver() {
+    const tiles = document.querySelectorAll('.active');
+    //console.log(tiles.length);
+    if (tiles.length >= 16) {
+        for (x = 1; x <= 4; x++) {
+            for (y = 1; y <= 4; y++) {
+                tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
+                tileRight = document.querySelector(`.active[data-x="${x + 1}"][data-y="${y}"]`);
+                tileBottom = document.querySelector(`.active[data-x="${x}"][data-y="${y + 1}"]`);
+                console.clear();
+                console.log('tile', tile);
+                console.log('tileRight', tileRight);
+                console.log('tileBottom', tileBottom);
+                if (tileRight && tileRight.dataset.value == tile.dataset.value) {
+                    return false;
+                }
+                if (tileBottom && tileBottom.dataset.value == tile.dataset.value) {
+                    return false;
+                }
+            }
+        }
+        //alert('game Over');
+        //reloadGame();
+        gameOver.classList.remove('hide');
+        return true;
+    }
+    return false;
+}
+
+
 
 function generateTile() {
     if (isGameOver()) {
@@ -395,23 +401,23 @@ function addNewTile(value, posX, posY, isMerged) {
     newTile.dataset.y = posY;
     // //console.log(newTile);
     tilesContainer.appendChild(newTile);
-    
-    if(isMerged){
+
+    if (isMerged) {
         const updatedScore = +gameScoreLive.innerText + value;
         gameScoreLive.innerText = updatedScore;
-        
+
         // //show flying score added
         // const scoreAdded = document.createElement('div');
         // scoreAdded.classList.add('score-fly');
         // scoreAdded.innerHTML = `+${value}`;
         // liveScoreBox.appendChild(scoreAdded);
 
-        if(updatedScore > highestScore){
+        if (updatedScore > highestScore) {
             gameScoreBest.innerText = highestScore = updatedScore;
             localStorage.setItem('heighestScore', updatedScore);
-        } 
-    } 
-    
+        }
+    }
+
 }
 
 
@@ -465,17 +471,17 @@ mc.on("swipedown", function () {
 });
 
 
-if('serviceWorker' in navigator) {
+if ('serviceWorker' in navigator) {
     //console.log(window);
-    
-        navigator.serviceWorker.register('sw.js')
-            .then((registration) => { 
-                //console.log(`service worker registered succesfully ${registration}`) 
-            })
-            .catch((err) => {
-                //console.log(`Error registring ${err}`) 
-            })
-   
+
+    navigator.serviceWorker.register('sw.js')
+        .then((registration) => {
+            //console.log(`service worker registered succesfully ${registration}`) 
+        })
+        .catch((err) => {
+            //console.log(`Error registring ${err}`) 
+        })
+
 } else {
     //console.log(`Service worker is not supported in this browser.`)
 }
