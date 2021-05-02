@@ -11,16 +11,24 @@ const gameInfo = document.querySelector('.game-info');
 const gameOver = document.querySelector('.game-over');
 const gameResult = document.querySelector('.game-result');
 
+let moveCount = 0;
+let lastScore = 0;
+let isUndoPossible = false;
+
 let isBestScoreClicked = false;
 gameScoreBest.addEventListener('click', () => {
-    isBestScoreClicked = !isBestScoreClicked;
-    isBestScoreClicked ? gameInfo.classList.add('controllers') : gameInfo.classList.remove('controllers');
-    //gameOver.classList.remove('hide');
-    //celebrate();
-    congo();
+    console.log('score');
+    undo();
+    // isBestScoreClicked = !isBestScoreClicked;
+    // isBestScoreClicked ? gameInfo.classList.add('controllers') : gameInfo.classList.remove('controllers');
+    // //gameOver.classList.remove('hide');
+    // //celebrate();
+    // congo();
 });
 
-document.querySelector('.new-game').addEventListener('click', reloadGame)
+document.querySelector('.new-game').addEventListener('click', reloadGame);
+document.querySelector('.undo').addEventListener('click', undo);
+
 
 let isNoTileMoved = true;
 let noOfTilesMoved = 0;
@@ -36,25 +44,6 @@ function reloadGame() {
     generateTile();
 }
 
-// console.log(liveScoreBox);
-// liveScoreBox.addEventListener('transitionend', e => {
-//     console.log(e.target);
-//     removeFlyingScore(e);
-// });
-
-
-// highestScoreBox.addEventListener('transitionend', e => {
-//     removeFlyingScore(e);
-// });
-
-// function removeFlyingScore(e){
-//     if (e.target || e.target.nodeName == 'DIV') {
-//         if (e.target.classList.contains('score-fly')) {
-//             console.log(e.target,e.target.dataset);
-//             e.target.remove();
-//         }
-//     }
-// }
 
 tilesContainer.addEventListener('transitionend', e => {
     //console.log(e.target);
@@ -62,23 +51,63 @@ tilesContainer.addEventListener('transitionend', e => {
         ////console.log(e.target);
         if (e.target.classList.contains('hidden')) {
             // //console.log(e.target,e.target.dataset);
-            e.target.remove();
+            //e.target.remove();
         }
     }
 });
 generateTile();
 generateTile();
 
+
+function undo() {
+
+    if (!isUndoPossible) {
+        return false;
+    }
+
+    document.querySelectorAll('.tile.merged, .tile:not([data-lastx])').forEach(tile => {
+        tile.remove();
+    });
+
+    document.querySelectorAll('.tile[data-lastx]').forEach(tile => {
+        console.log('X', tile.dataset.x, tile.dataset.lastx);
+        console.log('X', tile.dataset.y, tile.dataset.lasty);
+        tile.dataset.x = tile.dataset.lastx;
+        tile.dataset.y = tile.dataset.lasty;
+        tile.classList.remove('hidden');
+        tile.classList.remove('new');
+        tile.classList.add('active');
+        tile.removeAttribute('data-lastx');
+        tile.removeAttribute('data-lasty');
+    });
+
+    moveCount--;
+    isUndoPossible = false;
+    gameScoreLive.innerText = +gameScoreLive.innerText - lastScore;
+
+    // document.querySelectorAll('.tile:not([data-lastx])').forEach(tile => {
+    //     console.log('not data last', tile);
+    //     tile.remove();
+    // });
+}
+
 function moveRight() {
 
     noOfTilesMoved = 0;
     document.querySelectorAll('.merged').forEach(elem => elem.classList.remove('merged'));
+    document.querySelectorAll('.tile.hidden').forEach(tile => {
+        tile.remove();
+    });
+
     for (y = 1; y <= 4; y++) {
         for (x = 4; x >= 1; x--) {
 
-
             tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
             if (tile) {
+
+
+                tile.dataset.lastx = tile.dataset.x;
+                tile.dataset.lasty = tile.dataset.y;
                 ////console.log('move', x, y, {...tile.dataset});
                 //move(tile);
                 const nextX = findNextPlaceInRight(tile);
@@ -93,6 +122,8 @@ function moveRight() {
     }
 
     if (noOfTilesMoved > 0 || isGameOver()) {
+        moveCount++;
+        isUndoPossible = true;
         generateTile();
     }
 }
@@ -103,12 +134,18 @@ function moveLeft() {
     // }
     noOfTilesMoved = 0;
     document.querySelectorAll('.merged').forEach(elem => elem.classList.remove('merged'));
+    document.querySelectorAll('.tile.hidden').forEach(tile => {
+        tile.remove();
+    });
     // //console.clear();
     for (y = 1; y <= 4; y++) {
         for (x = 1; x <= 4; x++) {
-            tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
 
+
+            tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
             if (tile) {
+                tile.dataset.lastx = tile.dataset.x;
+                tile.dataset.lasty = tile.dataset.y;
                 // //console.log('before',{...tile.dataset});
                 const nextX = findNextPlaceInLeft(tile);
                 //isNoTileMoved = tile.dataset.x == nextX;
@@ -122,6 +159,8 @@ function moveLeft() {
     }
     //console.log(noOfTilesMoved);
     if (noOfTilesMoved > 0 || isGameOver()) {
+        moveCount++;
+        isUndoPossible = true;
         generateTile();
     }
 }
@@ -132,12 +171,18 @@ function moveUp() {
     // }
     noOfTilesMoved = 0;
     document.querySelectorAll('.merged').forEach(elem => elem.classList.remove('merged'));
+    document.querySelectorAll('.tile.hidden').forEach(tile => {
+        tile.remove();
+    });
     // //console.clear();
     for (x = 1; x <= 4; x++) {
         for (y = 1; y <= 4; y++) {
-            tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
 
+
+            tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
             if (tile) {
+                tile.dataset.lastx = tile.dataset.x;
+                tile.dataset.lasty = tile.dataset.y;
                 // //console.log('before',{...tile.dataset}, tile);
                 const nextY = findNextPlaceAtTop(tile);
                 //isNoTileMoved = tile.dataset.x == nextX;
@@ -151,6 +196,8 @@ function moveUp() {
     }
     //console.log(noOfTilesMoved);
     if (noOfTilesMoved > 0 || isGameOver()) {
+        moveCount++;
+        isUndoPossible = true;
         generateTile();
     }
 }
@@ -192,12 +239,18 @@ function moveDown() {
     // //console.clear();
     noOfTilesMoved = 0;
     document.querySelectorAll('.merged').forEach(elem => elem.classList.remove('merged'));
+    document.querySelectorAll('.tile.hidden').forEach(tile => {
+        tile.remove();
+    });
     // //console.clear();
     for (x = 1; x <= 4; x++) {
         for (y = 4; y >= 1; y--) {
-            tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
 
+
+            tile = document.querySelector(`.active[data-x="${x}"][data-y="${y}"]`);
             if (tile) {
+                tile.dataset.lastx = tile.dataset.x;
+                tile.dataset.lasty = tile.dataset.y;
                 // //console.log('before',{...tile.dataset});
                 const nextY = findNextPlaceAtBottom(tile);
                 //isNoTileMoved = tile.dataset.x == nextX;
@@ -211,6 +264,8 @@ function moveDown() {
     }
     ////console.log(noOfTilesMoved);
     if (noOfTilesMoved > 0 || isGameOver()) {
+        moveCount++;
+        isUndoPossible = true;
         generateTile();
     }
 }
@@ -310,22 +365,6 @@ function findNextPlaceInRight(elem) {
 
 }
 
-// function move(elem) {
-
-//     //let {posX, posY} = findNextPosition(elem);
-//     const nextX = findNextPosition(elem);
-
-//     if (elem.dataset.x == nextX) {
-//         noOfTilesMoved++;
-//     }
-
-//     elem.dataset.x = nextX;
-//     ////console.log(elem.dataset.x);
-
-//     //addNewTile(32, 4, 1);
-//     //document.querySelector('.tile.tile-4').classList.add('pos_1-3', 'merged')
-// }
-
 function isGameOver() {
     const tiles = document.querySelectorAll('.active');
     //console.log(tiles.length);
@@ -417,6 +456,7 @@ function addNewTile(value, posX, posY, isMerged) {
 
     if (isMerged) {
         const updatedScore = +gameScoreLive.innerText + value;
+        lastScore = value;
         gameScoreLive.innerText = updatedScore;
 
         // //show flying score added
@@ -431,7 +471,7 @@ function addNewTile(value, posX, posY, isMerged) {
         }
     }
 
-    if(value == 2048){
+    if (value == 2048) {
         congo();
     }
 
@@ -528,10 +568,10 @@ function celebrate() {
     //}, 10);
 }
 
-gameScoreBest.addEventListener('click', () => {
-    //celebrate();
-    console.log('celebrate clicked');
-});
+// gameScoreBest.addEventListener('click', () => {
+//     //celebrate();
+//     console.log('celebrate clicked');
+// });
 
 // Configuration, Play with these
 var config = {
