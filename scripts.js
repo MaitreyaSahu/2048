@@ -42,6 +42,9 @@ function reloadGame() {
     gameOver.classList.add('hide');
     generateTile();
     generateTile();
+
+    let lastScore = 0;
+    let isUndoPossible = false;
 }
 
 
