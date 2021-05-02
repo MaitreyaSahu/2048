@@ -43,8 +43,8 @@ function reloadGame() {
     generateTile();
     generateTile();
 
-    let lastScore = 0;
-    let isUndoPossible = false;
+    lastScore = 0;
+    isUndoPossible = false;
 }
 
 
@@ -536,7 +536,7 @@ if ('serviceWorker' in navigator) {
 
     navigator.serviceWorker.register('sw.js')
         .then((registration) => {
-            //console.log(`service worker registered succesfully ${registration}`) 
+            console.log(`service worker registered succesfully ${registration}`) 
         })
         .catch((err) => {
             //console.log(`Error registring ${err}`) 
