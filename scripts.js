@@ -475,7 +475,7 @@ function addNewTile(value, posX, posY, isMerged) {
     }
 
     if (value == 2048) {
-        congo();
+        //congo();
     }
 
 }
